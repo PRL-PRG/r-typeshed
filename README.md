@@ -1,0 +1,66 @@
+# r-typeshed
+
+Type signatures of R packages from CRAN, for [tyr](https://github.com/PRL-PRG/tyr)
+and the tools built on its type algebra (Rsem for R code, NativeSem for C code).
+
+
+This repository holds type signatures for the functions of CRAN packages, including 
+the native ones (the ones you would call with `.Call` for instance).
+
+When type checking a package, `tyr` uses those signatures for dependencies that
+do not carry type signatures already.
+
+## Layout
+
+One directory per package, named after it:
+
+```
+rlang/
+  METADATA   # the package and the version the signatures are written for
+  rlang.R    # signatures of the R functions
+  rlang.ty   # signatures of the native routines (optional)
+```
+
+- `<pkg>/<pkg>.R`: the signatures of the package's R functions, in Rsem's
+  annotation format (the format of Rsem's `sigs/base.R` and `sigs/stats.R`):
+  one `#|` line per signature, in the package's namespace.
+
+  ```r
+  #| rlang::caller_env : (n:dbl1?) -> env
+  #| rlang::is_null : (x:null) -> tt<>
+  #| rlang::is_null : (x:~null) -> ff<>
+  ```
+
+  Successive signatures of a name are overloads; the conventions (classes,
+  scalars, overloads grouped with `&&`) are those described at the top of
+  Rsem's `sigs/base.R`.
+
+- `<pkg>/<pkg>.ty`: the signatures of the package's native routines (what its
+  R code reaches with `.Call`, `.External`, ...), in NativeSem's format (the
+  format of NativeSem's `types/*.ty`). Needed only where tyr does not infer
+  them from the package's C sources.
+
+- `<pkg>/METADATA`: the package and the released version the signatures are
+  written for, in the `Field: value` format of R's `DESCRIPTION` files (DCF,
+  read in R with `read.dcf()`):
+
+  ```
+  Package: rlang
+  Version: 1.2.0
+  ```
+
+
+## Using the signatures
+
+Load a package's R signatures as an extra prelude, after base and stats:
+
+```sh
+tyr --prelude base.R --prelude stats.R --prelude r-typeshed/rlang/rlang.R <package-dir>
+```
+
+
+## Packages
+
+| Package | Version | R | Native |
+|---|---|---|---|
+| rlang | 1.2.0 | the functions vctrs and tidyr use | – |
