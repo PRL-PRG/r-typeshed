@@ -64,6 +64,9 @@ tyr --prelude base.R --prelude stats.R --prelude r-typeshed/rlang/rlang.R <packa
 | Package | Version | R | Native |
 |---|---|---|---|
 | rlang | 1.2.0 | the functions vctrs and tidyr use | – |
+| glue | 1.8.1 | the functions vctrs and tidyr use | – |
+| lifecycle | 1.0.5 | the functions vctrs and tidyr use | – |
+| cli | 3.6.6 | the functions vctrs and tidyr use | – |
 
 ## License
 
