@@ -17,6 +17,7 @@ One directory per package, named after it:
 ```
 rlang/
   METADATA   # the package and the version the signatures are written for
+  EXPORTS    # the names the package exports (generated)
   rlang.R    # signatures of the R functions
   rlang.ty   # signatures of the native routines (optional)
 ```
@@ -48,6 +49,20 @@ rlang/
   Package: rlang
   Version: 1.2.0
   ```
+
+- `<pkg>/EXPORTS`: the names the package exports at that version, one per
+  line. A package that imports `<pkg>` whole (`import(pkg)` in its NAMESPACE)
+  can use them all: tyr binds those without a signature to an unbound
+  `pkg::name`, so that they are reported as missing signatures of `<pkg>`
+  rather than looked up in base. Generated with the package installed at the
+  version of METADATA:
+
+  ```sh
+  Rscript scripts/exports.R rlang   # all the packages without argument
+  ```
+
+  The script also lists the signatures of `<pkg>.R` for names the package
+  does not export.
 
 
 ## Using the signatures

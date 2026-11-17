@@ -1,0 +1,16 @@
+badge
+deprecate_soft
+deprecate_stop
+deprecate_warn
+deprecated
+expect_defunct
+expect_deprecated
+is_present
+last_lifecycle_warnings
+lifecycle_linter
+lint_lifecycle
+lint_tidyverse_lifecycle
+pkg_lifecycle_statuses
+signal_experimental
+signal_stage
+signal_superseded

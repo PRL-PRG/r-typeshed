@@ -83,7 +83,6 @@
 #| rlang::set_names : (x:'a, nm:any?, ...: any) -> 'a
 # `x` with its missing values replaced by those of `y`.
 #| rlang::(%|%) : (x:v('a), y:v('a)) -> v('a)
-#| rlang::new_data_frame : (.x:list?, ...: any, .size:dbl1|null?, .class:chr|null?) -> { any }<data.frame, ...> with { names: CHR, any }
 # A sentinel, e.g. to remove an element in `list_modify`.
 #| rlang::zap : () -> { }<rlang_zap>
 #| rlang::hash : (x:any) -> CHR1<>
