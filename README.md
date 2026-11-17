@@ -64,3 +64,9 @@ tyr --prelude base.R --prelude stats.R --prelude r-typeshed/rlang/rlang.R <packa
 | Package | Version | R | Native |
 |---|---|---|---|
 | rlang | 1.2.0 | the functions vctrs and tidyr use | – |
+
+## License
+
+The signatures are distributed under the GNU General Public License, version 3
+(see [LICENSE](LICENSE)). Tools that read them, and the packages they describe,
+are not affected; modified signatures must be shared under the same license.
