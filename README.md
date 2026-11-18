@@ -12,17 +12,17 @@ do not carry type signatures already.
 
 ## Layout
 
-One directory per package, named after it:
+One directory per package in `packages/`, named after it:
 
 ```
-rlang/
+packages/rlang/
   METADATA   # the package and the version the signatures are written for
   EXPORTS    # the names the package exports (generated)
   rlang.R    # signatures of the R functions
   rlang.ty   # signatures of the native routines (optional)
 ```
 
-- `<pkg>/<pkg>.R`: the signatures of the package's R functions, in Rsem's
+- `packages/<pkg>/<pkg>.R`: the signatures of the package's R functions, in Rsem's
   annotation format (the format of Rsem's `sigs/base.R` and `sigs/stats.R`):
   one `#|` line per signature, in the package's namespace.
 
@@ -36,12 +36,12 @@ rlang/
   scalars, overloads grouped with `&&`) are those described at the top of
   Rsem's `sigs/base.R`.
 
-- `<pkg>/<pkg>.ty`: the signatures of the package's native routines (what its
+- `packages/<pkg>/<pkg>.ty`: the signatures of the package's native routines (what its
   R code reaches with `.Call`, `.External`, ...), in NativeSem's format (the
   format of NativeSem's `types/*.ty`). Needed only where tyr does not infer
   them from the package's C sources.
 
-- `<pkg>/METADATA`: the package and the released version the signatures are
+- `packages/<pkg>/METADATA`: the package and the released version the signatures are
   written for, in the `Field: value` format of R's `DESCRIPTION` files (DCF,
   read in R with `read.dcf()`):
 
@@ -50,7 +50,7 @@ rlang/
   Version: 1.2.0
   ```
 
-- `<pkg>/EXPORTS`: the names the package exports at that version, one per
+- `packages/<pkg>/EXPORTS`: the names the package exports at that version, one per
   line. A package that imports `<pkg>` whole (`import(pkg)` in its NAMESPACE)
   can use them all: tyr binds those without a signature to an unbound
   `pkg::name`, so that they are reported as missing signatures of `<pkg>`
@@ -67,10 +67,17 @@ rlang/
 
 ## Using the signatures
 
-Load a package's R signatures as an extra prelude, after base and stats:
+Give tyr the checkout: it loads the signatures of the packages the checked
+package imports (its NAMESPACE) or calls qualified (`pkg::f`):
 
 ```sh
-tyr --prelude base.R --prelude stats.R --prelude r-typeshed/rlang/rlang.R <package-dir>
+tyr --prelude base.R --prelude stats.R --typeshed r-typeshed <package-dir>
+```
+
+Or load one package's signatures as an extra prelude, after base and stats:
+
+```sh
+tyr --prelude base.R --prelude stats.R --prelude r-typeshed/packages/rlang/rlang.R <package-dir>
 ```
 
 

@@ -1,17 +1,18 @@
 #!/usr/bin/env Rscript
-# Write <pkg>/EXPORTS, the names <pkg> exports (one per line, sorted), from
+# Write packages/<pkg>/EXPORTS, the names <pkg> exports (one per line, sorted), from
 # the installed package, for each package given (all the directories with a
 # METADATA by default). The installed version must be the one of METADATA.
-# Also lists the signatures of <pkg>/<pkg>.R for names <pkg> does not export.
+# Also lists the signatures of packages/<pkg>/<pkg>.R for names <pkg> does not export.
 #
 # Usage: Rscript scripts/exports.R [pkg...]   (from the repository's root)
 
 args <- commandArgs(trailingOnly = TRUE)
 pkgs <- if (length(args)) args else
-  basename(dirname(Sys.glob(file.path("*", "METADATA"))))
+  basename(dirname(Sys.glob(file.path("packages", "*", "METADATA"))))
 status <- 0L
 for (pkg in pkgs) {
-  meta <- read.dcf(file.path(pkg, "METADATA"))
+  dir <- file.path("packages", pkg)
+  meta <- read.dcf(file.path(dir, "METADATA"))
   want <- meta[1, "Version"]
   have <- tryCatch(as.character(packageVersion(pkg)), error = function(e) NA)
   if (is.na(have)) {
@@ -22,9 +23,9 @@ for (pkg in pkgs) {
     status <- 1L; next
   }
   exports <- sort(getNamespaceExports(pkg))
-  writeLines(exports, file.path(pkg, "EXPORTS"))
+  writeLines(exports, file.path(dir, "EXPORTS"))
   message(pkg, " ", have, ": ", length(exports), " exports")
-  sigs <- file.path(pkg, paste0(pkg, ".R"))
+  sigs <- file.path(dir, paste0(pkg, ".R"))
   if (file.exists(sigs)) {
     m <- regmatches(readLines(sigs), regexec(paste0("^#\\| ", pkg, "::\\(?([^ )]+)\\)? :"), readLines(sigs)))
     declared <- unique(vapply(Filter(length, m), `[`, "", 2L))
