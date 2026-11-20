@@ -89,6 +89,8 @@ tyr --prelude base.R --prelude stats.R --prelude r-typeshed/packages/rlang/rlang
 | glue | 1.8.1 | the functions vctrs and tidyr use | – |
 | lifecycle | 1.0.5 | the functions vctrs and tidyr use | – |
 | cli | 3.6.6 | the functions vctrs and tidyr use | – |
+| vctrs | 0.7.3 | none yet (EXPORTS only, for tidyr's `import(vctrs)`) | – |
+| zoo | 1.9-1 | none yet (EXPORTS only, for sandwich's `import(zoo)`) | – |
 
 ## License
 
